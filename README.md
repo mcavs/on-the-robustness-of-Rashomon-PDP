@@ -1,14 +1,6 @@
-# Rashomon PDP
+# On the Robustness of Rashomon Partial Dependence Profiles: Theory of Optimal Thresholds and Empirical Comparison of Sampling Methods
 
-Quick and dirty exploration of ideas from [1].
-
-> **NOTE:**  This is done just to satisfy my curiosity, expect mistakes. I tried to make it as reproducible as possible but due to setting `max_runtime_secs` and running on my old personal laptop from 2012 you might end up with different results.
-
-**UPDATE**: I reran the experiments for all the configurations and I changed the transformation of X1 in scenario 3 to:
-- the correct version (latest on `main`)
-- a more similar to the one in the paper [`0.08*np.where(x>=0, 0.5*np.tanh(x)+0.1*np.sqrt(np.abs(x)), -np.sqrt(np.abs(2*x))) + 0.85`](https://github.com/freedatoms/rashomon_pdp_experiment/tree/29e3014c034df5341b103084af7bc352f63d981f).
-
-The first version used [`np.exp(np.cos(5*X1*np.pi))`](https://github.com/freedatoms/rashomon_pdp_experiment/tree/c4f1fd0c75a41bfb9f8d01967f50fad797ca07bf) as X1 transformation in scenario 3 since it wasn't mentioned in the paper. 
+This repository was created to reproduce the experimental work included in the paper entitled "On the Robustness of Rashomon Partial Dependence Profiles: Theory of Optimal Thresholds and Empirical Comparison of Sampling Methods", submitted to the AutoML 2026 conference Method Track.
 
 ## Structure
 
@@ -81,6 +73,3 @@ Nevertheless it seems possible to me that Stacked Ensembles could be this good a
 ![Average ranks in inner quartiles](avg_ranks_inner_half_noise_9.png)
 
 ![Average ranks in outer quartiles](avg_ranks_outer_half_noise_9.png)
-
-## References
-[1] M. Cavus, J. N. van Rijn, a P. Biecek, „Quantifying Model Uncertainty with AutoML and Rashomon Partial Dependence Profiles: Enabling Trustworthy and Human-centered XAI“, Inf Syst Front, Feb. 2026, doi: 10.1007/s10796-026-10698-3. https://doi.org/10.1007/s10796-026-10698-3
