@@ -11,35 +11,33 @@ This repository was created to reproduce the experimental work included in the p
 
 ## Experiment setting
 
-I had some ideas about what could be better than the Rashomon PDP presented in [1]. None proved significantly better.
-
-Rashomom PDP uses models solely based on their performance. My idea was that diversity in model types might be too useful to discard e.g. tree-based models don't extrapolate well and they can influence the combined PDP too much. This can be seen in the 3rd quartile of the following plot. The PDP of the best model is closer to the ground truth than the combination of multiple PDPs. In this plot best model is also the best base model (no Stacked Ensemble trained within the time limit).
+Rashomom PDP uses models solely based on their performance. My idea was that diversity in model types might be too useful to discard, e.g., tree-based models don't extrapolate well, and they can influence the combined PDP too much. This can be seen in the 3rd quartile of the following plot. The PDP of the best model is closer to the ground truth than the combination of multiple PDPs. In this plot, the best model is also the best base model (no Stacked Ensemble trained within the time limit).
 
 ![PDP extrapolation](pdp_extrapol.png)
 
-Here we can also see that using "Best of Family" models also doesn't perform well. So I tried using intersection of models in the Rashomon set ($\varepsilon = 0.05$) and the "Best of Family".
+Here, we can also see that using "Best of Family" models also doesn't perform well. So we tried using the intersection of models in the Rashomon set ($\varepsilon = 0.05$) and the "Best of Family".
 
-So I have tested following scenarios:
+So I have tested the following scenarios:
 
 - Best Model
 - Best Basemodel (excludes Stacked Ensemble)
-- Best of Family - uses best model from each family
-- Rashomon - uses models from Rashomon set
+- Best of Family - uses the best model from each family
+- Rashomon - uses models from the Rashomon set
 - Rashomon intersected with Best of Family - uses only one model from each type within the Rashomon set
 - All Models - uses all models
-- Best Stacked Ensemble - SE already combines models so it seems logical to me to have it as as separately
+- Best Stacked Ensemble - SE already combines models, so it seems logical to me to have it as as separately
 
-> Knowing the inner workings of H2O-3 AutoML, I ran the AutoML with `nfolds=5` which forces Stacked Ensemble to use CV scores to train the metalearner. The default (`nfolds=-1`) might end up training Stacked Ensemble in blending mode.
+> Knowing the inner workings of H2O-3 AutoML, I ran the AutoML with `nfolds=5`, which forces Stacked Ensemble to use CV scores to train the metalearner. The default (`nfolds=-1`) might end up training Stacked Ensemble in blending mode.
 
-Since there are those potential extrapolation issues I decided to look at the full range, inner 2 quartiles, and outer 2 quartiles to see if there is any significant difference in how the performance of the methods differs.
+Since there are those potential extrapolation issues, I decided to look at the full range, inner 2 quartiles, and outer 2 quartiles to see if there is any significant difference in how the performance of the methods differs.
 
 ## Results
 
-Due to time constraints (`max_runtime_secs`) Stacked Ensembles are not always present so they might look much better than they really are. Stacked Ensembles failed to train in my case due to time constraints in roughly 1/4 cases.
+Due to time constraints (`max_runtime_secs`), Stacked Ensembles are not always present, so they might look much better than they really are. Stacked Ensembles failed to train in my case due to time constraints in roughly 1/4 cases.
 
-Nevertheless it seems possible to me that Stacked Ensembles could be this good as they try to combine models so that they generalize better in more sophisticated way than just picking models above some threshold or looking at their type. More evaluation results are in [03_evaluation.ipynb](03_evaluation.ipynb). 
+Nevertheless, it seems possible to me that Stacked Ensembles could be as good as they try to combine models so that they generalize better in a more sophisticated way than just picking models above some threshold or looking at their type. More evaluation results are in [03_evaluation.ipynb](03_evaluation.ipynb). 
 
-**UPDATE:** I also looked at performance in different noise levels. Generally speaking, it seems to me that Rashomon behaves better when there is lower amount of noise. This can be demonstrated by both looking at inner vs outer halves of the PDP and different noise levels. In the inner half, models tend to agree likely due to higher training data density => lower variance in PDPs. In the [noise level == 3](#Noise-level-==-3-(error-variance-=-9)), the Rashomon is significantly worse than the "Rashomon intersected with Best of Family".
+**UPDATE:** I also looked at performance in different noise levels. Generally speaking, it seems to me that Rashomon behaves better when there is a lower amount of noise. This can be demonstrated by both looking at the inner vs outer halves of the PDP and different noise levels. In the inner half, models tend to agree likely due to higher training data density => lower variance in PDPs. In the [noise level == 3](#Noise-level-==-3-(error-variance-=-9)), the Rashomon is significantly worse than the "Rashomon intersected with Best of Family".
 
 
 ![Average ranks in whole region](avg_ranks_full_range.png)
